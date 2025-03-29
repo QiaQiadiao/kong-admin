@@ -1,14 +1,20 @@
 <template>
-  <div>login</div>
+  <div class="login">
+    <LoginPannel></LoginPannel>
+  </div>
 </template>
 
 <script setup lang="ts">
-// import hyRequest from '@/service'
-// hyRequest.get({
-//   url:'/'
-// }).then((res)=>{
-//   console.log(res)
-// })
+import LoginPannel from './components/LoginPannel.vue'
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: url(/src/assets/img/subtle-stripes.svg);
+}
+</style>
