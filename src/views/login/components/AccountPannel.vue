@@ -7,6 +7,7 @@
     :label-position="labelPosition"
     :rules="accountRules"
     status-icon
+    ref="formRef"
   >
     <el-form-item label="账号" prop="name">
       <el-input v-model="account.name" />
@@ -19,11 +20,12 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import type { FormProps, FormRules } from 'element-plus'
+import { ElNotification } from 'element-plus'
+import type { FormProps, FormRules, FormInstance } from 'element-plus'
 // 表格格式设置
 const labelPosition = ref<FormProps['labelPosition']>('right')
 
-// 规则校验
+// 规则校验设置
 const account = reactive({
   name: '',
   password: '',
@@ -43,8 +45,27 @@ const accountRules = reactive<FormRules>({
 const handleAccountLogin = () => {
   console.log('在调用账户登录处理函数了！')
   console.log(account.name, account.password)
+  formRef.value?.validate((valid) => {
+    if (valid) {
+      console.log('验证成功')
+      ElNotification({
+        title: 'Success',
+        message: '登录成功',
+        type: 'success',
+      })
+    } else {
+      ElNotification({
+        title: 'Error',
+        message: '登录失败',
+        type: 'error',
+      })
+    }
+  })
 }
-defineExpose({ handleAccountLogin })
+defineExpose({ handleAccountLogin }) // 暴露出处理函数使得在父组件的btn按钮被点击时能被调用
+
+// 表单提交前校验
+const formRef = ref<FormInstance>() // 获得表单实例
 </script>
 
 <style scoped lang="less"></style>
