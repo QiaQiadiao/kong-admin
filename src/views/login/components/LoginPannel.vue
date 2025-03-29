@@ -9,7 +9,7 @@
           <template #label>
             <el-icon><UserFilled /></el-icon>&nbsp; 账号登陆
           </template>
-          <AccountPannel></AccountPannel>
+          <AccountPannel ref="refAccount"></AccountPannel>
         </el-tab-pane>
         <el-tab-pane label="手机登录" name="phone">
           <template #label>
@@ -32,10 +32,15 @@
 import { ref } from 'vue'
 import PhonePannel from './PhonePannel.vue'
 import AccountPannel from './AccountPannel.vue'
-const activeName = ref('account')
-const isKeep = ref(false)
+
+const activeName = ref('account') // 显示哪一个登录模块
+const isKeep = ref(false) // 是否记住密码
+const refAccount = ref<InstanceType<typeof AccountPannel>>() // 获得AccountPannnel构造函数的实例
 const handleBtnClick = () => {
-  console.log(activeName.value)
+  if (activeName.value === 'account') {
+    refAccount.value?.handleAccountLogin() //调用相应组件暴露出来的方法
+  } else {
+  }
 }
 </script>
 
