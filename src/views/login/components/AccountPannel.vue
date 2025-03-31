@@ -22,6 +22,7 @@
 import { ref, reactive } from 'vue'
 import { ElNotification } from 'element-plus'
 import type { FormProps, FormRules, FormInstance } from 'element-plus'
+import { accountLoginRequest } from '@/service/api/login/login'
 // 表格格式设置
 const labelPosition = ref<FormProps['labelPosition']>('right')
 
@@ -43,16 +44,16 @@ const accountRules = reactive<FormRules>({
 
 // 处理函数封装并暴露给小页面组件中调用
 const handleAccountLogin = () => {
-  console.log('在调用账户登录处理函数了！')
-  console.log(account.name, account.password)
   formRef.value?.validate((valid) => {
     if (valid) {
-      console.log('验证成功')
       ElNotification({
         title: 'Success',
         message: '登录成功',
         type: 'success',
       })
+      const name = account.name
+      const password = account.password
+      accountLoginRequest({ name, password })
     } else {
       ElNotification({
         title: 'Error',

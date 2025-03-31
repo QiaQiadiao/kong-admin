@@ -15,3 +15,14 @@ app.use(registerIcons) //对element-plus的icon进行全局注册
 app.use(router)
 app.use(pinia)
 app.mount('#app')
+//
+// import axios from 'axios'
+// const instance = axios.create()
+// instance
+//   .post('http://localhost:3000/login', {
+//     name: 'coderwhy',
+//     password: '123456',
+//   })
+//   .then((res) => {
+//     console.log(res.data)
+//   })

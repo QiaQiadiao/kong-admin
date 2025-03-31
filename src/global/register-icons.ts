@@ -7,3 +7,4 @@ function registerIcons(app: App<Element>) {
   }
 }
 export default registerIcons
+// element-plus icon 全局引入
