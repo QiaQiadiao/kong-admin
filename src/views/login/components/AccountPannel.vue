@@ -24,13 +24,18 @@ import { ElNotification } from 'element-plus'
 import type { FormProps, FormRules, FormInstance } from 'element-plus'
 import { useAccountLoginStore } from '@/store/login/login'
 import type { IAccount } from '@/types/login_types'
+import { localCache } from '@/utils/cache'
+//常量
+const NAME_CACHE = 'name'
+const PASSWORD_CACHE = 'password'
+const ISKEEP_CACHE = 'isKeep'
 // 表格格式设置
 const labelPosition = ref<FormProps['labelPosition']>('right')
 
 // 规则校验设置
 const account = reactive<IAccount>({
-  name: '',
-  password: '',
+  name: localCache.getCache(NAME_CACHE) ?? '',
+  password: localCache.getCache(PASSWORD_CACHE) ?? '',
 })
 const accountRules = reactive<FormRules>({
   name: [
@@ -44,7 +49,7 @@ const accountRules = reactive<FormRules>({
 })
 
 // 处理函数封装并暴露给小页面组件中调用
-const handleAccountLogin = () => {
+const handleAccountLogin = (isKeep: boolean) => {
   formRef.value?.validate((valid) => {
     if (valid) {
       ElNotification({
@@ -56,6 +61,15 @@ const handleAccountLogin = () => {
       const password = account.password
       const accountLoginStore = useAccountLoginStore()
       accountLoginStore.accountLogin({ name, password })
+      if (isKeep) {
+        localCache.setCache(NAME_CACHE, name)
+        localCache.setCache(PASSWORD_CACHE, password)
+        localCache.setCache(ISKEEP_CACHE, isKeep)
+      } else {
+        localCache.removeCache(NAME_CACHE)
+        localCache.removeCache(PASSWORD_CACHE)
+        localCache.removeCache(ISKEEP_CACHE)
+      }
     } else {
       ElNotification({
         title: 'Error',

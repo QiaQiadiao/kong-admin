@@ -32,13 +32,14 @@
 import { ref } from 'vue'
 import PhonePannel from './PhonePannel.vue'
 import AccountPannel from './AccountPannel.vue'
+import { localCache } from '@/utils/cache'
 
 const activeName = ref('account') // 显示哪一个登录模块
-const isKeep = ref(false) // 是否记住密码
+const isKeep = ref<boolean>(localCache.getCache('isKeep') ?? false) // 是否记住密码
 const refAccount = ref<InstanceType<typeof AccountPannel>>() // 获得AccountPannnel构造函数的实例
 const handleBtnClick = () => {
   if (activeName.value === 'account') {
-    refAccount.value?.handleAccountLogin() //调用相应组件暴露出来的方法
+    refAccount.value?.handleAccountLogin(isKeep.value) //调用相应组件暴露出来的方法
   } else {
   }
 }
