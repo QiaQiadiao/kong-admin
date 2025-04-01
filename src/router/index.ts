@@ -1,5 +1,6 @@
+import { LOGIN_TOKEN } from '@/global/constants'
 import { createRouter, createWebHashHistory } from 'vue-router'
-
+import { localCache } from '@/utils/cache'
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   // 映射关系：path => component
@@ -22,5 +23,10 @@ const router = createRouter({
     },
   ],
 })
-
+// 根据token决定是否跳转登录页面
+router.beforeEach((to) => {
+  if (to.path === '/main' && !localCache.getCache(LOGIN_TOKEN)) {
+    return '/login' // 最终跳转位置
+  }
+})
 export default router
