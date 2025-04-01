@@ -1,10 +1,10 @@
 import { myRequest } from '@/service'
-export const accountLoginRequest = (account: object) => {
+import type { IAccount } from '@/types/login_types'
+export const accountLoginRequest = (account: IAccount) => {
   const dataAccount = {
     url: '/login',
     data: account,
   }
-  myRequest.post(dataAccount).then((res) => {
-    console.log(res.data)
-  })
+  const res = myRequest.post(dataAccount)
+  return res
 }

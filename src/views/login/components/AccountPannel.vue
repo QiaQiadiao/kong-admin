@@ -22,12 +22,13 @@
 import { ref, reactive } from 'vue'
 import { ElNotification } from 'element-plus'
 import type { FormProps, FormRules, FormInstance } from 'element-plus'
-import { accountLoginRequest } from '@/service/api/login/login'
+import { useAccountLoginStore } from '@/store/login/login'
+import type { IAccount } from '@/types/login_types'
 // 表格格式设置
 const labelPosition = ref<FormProps['labelPosition']>('right')
 
 // 规则校验设置
-const account = reactive({
+const account = reactive<IAccount>({
   name: '',
   password: '',
 })
@@ -53,7 +54,8 @@ const handleAccountLogin = () => {
       })
       const name = account.name
       const password = account.password
-      accountLoginRequest({ name, password })
+      const accountLoginStore = useAccountLoginStore()
+      accountLoginStore.accountLogin({ name, password })
     } else {
       ElNotification({
         title: 'Error',
