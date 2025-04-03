@@ -20,7 +20,7 @@
       </el-tabs>
     </div>
     <!-- 尾部保存密码及按钮 -->
-    <div class="controls">
+    <div v-if="flag" class="controls" ref="controls">
       <el-checkbox v-model="isKeep" label="记住密码" size="large" />
       <el-link target="_blank">忘记密码</el-link>
     </div>
@@ -29,14 +29,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import PhonePannel from './PhonePannel.vue'
 import AccountPannel from './AccountPannel.vue'
 import { localCache } from '@/utils/cache'
 
 const activeName = ref('account') // 显示哪一个登录模块
+const flag = ref<boolean>(true) // 是否显示保存密码
 const isKeep = ref<boolean>(localCache.getCache('isKeep') ?? false) // 是否记住密码
 const refAccount = ref<InstanceType<typeof AccountPannel>>() // 获得AccountPannnel构造函数的实例
+watch(activeName, () => (flag.value = !flag.value))
 const handleBtnClick = () => {
   if (activeName.value === 'account') {
     refAccount.value?.handleAccountLogin(isKeep.value) //调用相应组件暴露出来的方法
@@ -60,11 +62,11 @@ const handleBtnClick = () => {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: 5px;
     --el-color-primary: #535353;
   }
   .btn {
     width: 100%;
+    margin-top: 10px;
   }
 }
 </style>

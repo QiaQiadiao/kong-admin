@@ -10,10 +10,10 @@
     ref="formRef"
   >
     <el-form-item label="账号" prop="name">
-      <el-input v-model="account.name" />
+      <el-input v-model="account.name" placeholder="请输入账号" />
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input show-password v-model="account.password" />
+      <el-input show-password v-model="account.password" placeholder="请输入验证码" />
     </el-form-item>
   </el-form>
 </template>
@@ -60,16 +60,17 @@ const handleAccountLogin = (isKeep: boolean) => {
       const name = account.name
       const password = account.password
       const accountLoginStore = useAccountLoginStore()
-      accountLoginStore.accountLogin({ name, password })
-      if (isKeep) {
-        localCache.setCache(NAME_CACHE, name)
-        localCache.setCache(PASSWORD_CACHE, password)
-        localCache.setCache(ISKEEP_CACHE, isKeep)
-      } else {
-        localCache.removeCache(NAME_CACHE)
-        localCache.removeCache(PASSWORD_CACHE)
-        localCache.removeCache(ISKEEP_CACHE)
-      }
+      accountLoginStore.accountLogin({ name, password }).then(() => {
+        if (isKeep) {
+          localCache.setCache(NAME_CACHE, name)
+          localCache.setCache(PASSWORD_CACHE, password)
+          localCache.setCache(ISKEEP_CACHE, isKeep)
+        } else {
+          localCache.removeCache(NAME_CACHE)
+          localCache.removeCache(PASSWORD_CACHE)
+          localCache.removeCache(ISKEEP_CACHE)
+        }
+      })
     } else {
       ElNotification({
         title: 'Error',
