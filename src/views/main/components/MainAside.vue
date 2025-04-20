@@ -12,6 +12,7 @@
     class="el-menu"
     text-color="black"
     default-active="39"
+    :collapse="isFold"
   >
     <template v-for="item in userMenu" :key="item.id">
       <el-sub-menu :index="item.id + ''">
@@ -25,41 +26,16 @@
       </el-sub-menu>
     </template>
   </el-menu>
-
-  <!-- <el-sub-menu index="2">
-      <template #title>
-        <el-icon><icon-menu /></el-icon>
-        <span>Navigator Two</span>
-      </template>
-      <el-menu-item index="2-1">2-1</el-menu-item>
-      <el-menu-item index="2-2">2-2</el-menu-item>
-      <el-menu-item index="2-3">2-3</el-menu-item>
-      <el-menu-item index="2-4">2-4</el-menu-item>
-    </el-sub-menu>
-
-    <el-sub-menu index="3">
-      <template #title>
-        <el-icon><icon-menu /></el-icon>
-        <span>Navigator Three</span>
-      </template>
-      <el-menu-item index="3-1">3-1</el-menu-item>
-      <el-menu-item index="3-2">3-2</el-menu-item>
-    </el-sub-menu>
-    <el-sub-menu index="4">
-      <template #title>
-        <el-icon><icon-menu /></el-icon>
-        <span>Navigator Four</span>
-      </template>
-      <el-menu-item index="4-1">4-1</el-menu-item>
-      <el-menu-item index="4-2">4-2</el-menu-item>
-      <el-menu-item index="4-3">4-3</el-menu-item>
-      <el-menu-item index="4-4">4-4</el-menu-item>
-    </el-sub-menu> -->
 </template>
 
 <script setup lang="ts">
 import { useAccountLoginStore } from '@/store/login/login'
-
+defineProps({
+  isFold: {
+    type: Boolean,
+    default: false,
+  },
+})
 const accountLoginStore = useAccountLoginStore()
 const userMenu = accountLoginStore.userMenu
 console.log(userMenu)
@@ -69,18 +45,23 @@ console.log(userMenu)
 .el-aside::-webkit-scrollbar {
   display: none;
 }
+
 .logo {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin-right: 15px;
+  width: 250px;
   .lg {
+    margin: 10px;
+    margin-left: 15px;
     img {
       width: 32px;
       height: 32px;
       border-radius: 8px;
     }
-    margin: 10px 10px;
+  }
+  h3 {
+    margin-right: 50px;
   }
 }
 </style>
