@@ -5,7 +5,7 @@
     </el-aside>
     <el-container>
       <el-header height="50px"><MainHeader @is-menu-fold="handleMenuFold"></MainHeader></el-header>
-      <el-main><MainContent></MainContent></el-main>
+      <el-main><RouterView></RouterView></el-main>
     </el-container>
   </el-container>
 </template>
@@ -21,7 +21,6 @@
 // }
 import { ref } from 'vue'
 import MainAside from './components/MainAside.vue'
-import MainContent from './components/MainContent.vue'
 import MainHeader from './components/MainHeader.vue'
 const isFold = ref(false)
 const handleMenuFold = (flag: boolean) => {
@@ -40,13 +39,14 @@ const handleMenuFold = (flag: boolean) => {
     display: none;
   }
   .el-container {
-    background-color: skyblue;
+    background-color: #eaeaea;
   }
   .el-header {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: palegoldenrod;
+    background-color: white;
+    box-shadow: 0 5px 5px #bebebe;
   }
 }
 </style>

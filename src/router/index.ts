@@ -25,7 +25,7 @@ const router = createRouter({
 })
 // 根据token决定是否跳转登录页面
 router.beforeEach((to) => {
-  if (to.path === '/main' && !localCache.getCache(LOGIN_TOKEN)) {
+  if (to.path.startsWith('/main') && !localCache.getCache(LOGIN_TOKEN)) {
     return '/login' // 最终跳转位置
   }
 })

@@ -29,7 +29,8 @@ export const useAccountLoginStore = defineStore(
       // 获取用户的菜单
       const userMenuResult = await getUserMenusByRoleId(userInfo.value.role?.id)
       userMenu.value = userMenuResult.data
-
+      // 读取所有路由
+      // const allRoute = import.meta.glob('')
       // 跳转到主页面
       router.push('/main')
     }
