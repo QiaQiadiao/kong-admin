@@ -1,5 +1,5 @@
 <template>
-  <h1>product-category</h1>
+  <h1>product-goods</h1>
 </template>
 
 <script setup lang="ts"></script>

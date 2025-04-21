@@ -1,7 +1,11 @@
+import type { App } from 'vue'
 import { createPinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { useAccountLoginStore } from './login/login'
 
 const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-
-export default pinia
+// 注册 store
+export const registerStore = (app: App<Element>) => {
+  app.use(pinia)
+  const AccountLoginStore = useAccountLoginStore()
+  AccountLoginStore.loadLogin()
+}

@@ -5,20 +5,12 @@
     </el-aside>
     <el-container>
       <el-header height="50px"><MainHeader @is-menu-fold="handleMenuFold"></MainHeader></el-header>
-      <el-main><RouterView></RouterView></el-main>
+      <el-main>123<RouterView></RouterView></el-main>
     </el-container>
   </el-container>
 </template>
 
 <script setup lang="ts">
-// import { LOGIN_TOKEN } from '@/global/constants'
-// import { localCache } from '@/utils/cache'
-// import { useRouter } from 'vue-router'
-// const router = useRouter()
-// const handleLogout = () => {
-//   localCache.removeCache(LOGIN_TOKEN)
-//   router.push('/login')
-// }
 import { ref } from 'vue'
 import MainAside from './components/MainAside.vue'
 import MainHeader from './components/MainHeader.vue'
