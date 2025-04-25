@@ -5,7 +5,7 @@
     </el-aside>
     <el-container>
       <el-header height="50px"><MainHeader @is-menu-fold="handleMenuFold"></MainHeader></el-header>
-      <el-main>123<RouterView></RouterView></el-main>
+      <el-main><RouterView></RouterView></el-main>
     </el-container>
   </el-container>
 </template>

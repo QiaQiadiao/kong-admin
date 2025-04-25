@@ -6,7 +6,7 @@
       </el-icon>
     </div>
     <div class="content">
-      <div class="breadcrumb">面包屑</div>
+      <div class="breadcrumb"><HeaderCrumb></HeaderCrumb></div>
       <div class="info"><HeaderInfo></HeaderInfo></div>
     </div>
   </div>
@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import HeaderInfo from '../header-cmps/HeaderInfo.vue'
-
+import HeaderCrumb from '../header-cmps/HeaderCrumb.vue'
 const emit = defineEmits(['isMenuFold'])
 const isFold = ref(false)
 const handleMenuFold = () => {

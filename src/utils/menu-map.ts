@@ -10,16 +10,58 @@ const getAllRoute = () => {
   }
   return localRoutes
 }
-
+// 导出第一个菜单路由
+export let firstMenu: any = null
 // 根据传入菜单情况按需进行动态导入路由
 export const handleMenuToRoute = (userMenu) => {
   const localRoutes = getAllRoute()
   for (const menu of userMenu.value) {
+    let firstChild = null
+    let flag = 0
     for (const item of menu.children) {
       const route = localRoutes.find((i) => i.path === item.url)
       if (route) {
+        if (!firstMenu) firstMenu = item
         route.path = route.path.slice(6)
         router.addRoute('main', route)
+        if (!flag) {
+          flag = 1
+          firstChild = item
+        }
+      }
+    }
+    if (firstChild) {
+      router.addRoute({
+        path: menu.url,
+        redirect: firstChild.url,
+      })
+    }
+  }
+}
+/*
+@params path: 当前url路径
+@params userMenu: 当前用户的菜单数据
+ */
+export const pathToMenu = (path: string, userMenu) => {
+  for (const menu of userMenu) {
+    for (const item of menu.children) {
+      if (item.url === path) return item
+    }
+  }
+}
+
+interface IbreadCrumber {
+  name: string
+  path: string
+}
+export const pathToCrumber = (path: string, userMenu) => {
+  const breadCrumber: IbreadCrumber[] = []
+  for (const menu of userMenu) {
+    for (const item of menu.children) {
+      if (item.url === path) {
+        breadCrumber.push({ name: menu.name, path: menu.url })
+        breadCrumber.push({ name: item.name, path: item.url })
+        return breadCrumber
       }
     }
   }

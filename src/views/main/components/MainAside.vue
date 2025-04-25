@@ -11,7 +11,7 @@
     background-color="white"
     class="el-menu"
     text-color="black"
-    default-active="39"
+    :default-active="defaultActive"
     :collapse="isFold"
   >
     <template v-for="item in userMenu" :key="item.id">
@@ -32,7 +32,9 @@
 
 <script setup lang="ts">
 import { useAccountLoginStore } from '@/store/login/login'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
+import { pathToMenu } from '@/utils/menu-map'
 defineProps({
   isFold: {
     type: Boolean,
@@ -40,8 +42,13 @@ defineProps({
   },
 })
 const router = useRouter()
+const route = useRoute()
 const accountLoginStore = useAccountLoginStore()
 const userMenu = accountLoginStore.userMenu
+const defaultActive = computed(() => {
+  const currentMenu = pathToMenu(route.path, userMenu)
+  return currentMenu.id + ''
+})
 const handleItemClick = (item: any) => {
   router.push(item.url)
 }
