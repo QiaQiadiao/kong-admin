@@ -1,11 +1,10 @@
 import { myRequest } from '@/service'
 import type { IAccount } from '@/types/login_types'
 export const accountLoginRequest = (account: IAccount) => {
-  const dataAccount = {
+  const res = myRequest.post({
     url: '/user/login',
     data: account,
-  }
-  const res = myRequest.post(dataAccount)
+  })
   return res
 }
 export const getUserInfoById = (id: number) => {

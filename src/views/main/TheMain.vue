@@ -31,7 +31,10 @@ const handleMenuFold = (flag: boolean) => {
     display: none;
   }
   .el-container {
-    background-color: #eaeaea;
+    background-color: #f0f0f0;
+  }
+  .el-main {
+    padding: 10px;
   }
   .el-header {
     display: flex;

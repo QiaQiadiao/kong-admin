@@ -14,11 +14,9 @@ import { computed } from 'vue'
 const accountLoginStore = useAccountLoginStore()
 const userMenu = accountLoginStore.userMenu
 const route = useRoute()
-console.log(route.path)
 const breadCrumb = computed(() => {
   return pathToCrumber(route.path, userMenu)
 })
-console.log(breadCrumb)
 </script>
 
 <style scoped lang="less">
