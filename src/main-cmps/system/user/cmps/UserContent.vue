@@ -1,36 +1,73 @@
 <template>
   <div class="header">
-    <h3 class="title">用户列表</h3>
-    <el-button type="info">新建用户</el-button>
+    <h3 class="title" style="font-size: 22px">用户列表</h3>
+    <el-button type="info" style="margin-right: 36px" size="large">新建用户</el-button>
   </div>
   <div class="main">
-    <!-- <ul v-for="item in userList">
-      <li :key="item.id">{{ item.name }}</li>
-    </ul> -->
-    <ul>
-      <li v-for="item in userList" :key="item.id">{{ item.name }}</li>
-    </ul>
+    <el-table :data="userList" stripe style="width: 100%">
+      <el-table-column type="selection" width="40px"></el-table-column>
+      <el-table-column type="index" label="序号" width="70px" align="center"></el-table-column>
+      <el-table-column prop="name" label="用户名" width="150px" />
+      <el-table-column prop="realname" label="真实姓名" width="150px" />
+      <el-table-column prop="cellphone" label="手机号码" width="150px" />
+      <el-table-column prop="enable" label="状态" align="center">
+        <template #default="scope">
+          <el-button text :icon="scope.row.enable ? Check : Close">
+            {{ scope.row.enable ? '启用' : '禁用' }}
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="createAt" label="创建时间" />
+      <el-table-column prop="updateAt" label="更新时间" />
+      <el-table-column label="操作" align="center" width="200px">
+        <el-button :icon="Edit" text>编辑</el-button>
+        <el-button :icon="Delete" text>删除</el-button>
+      </el-table-column>
+    </el-table>
   </div>
-  <div class="pagination">分页</div>
+  <div class="pagination">
+    <el-pagination
+      v-model:current-page="currentPage"
+      v-model:page-size="pageSize"
+      :page-sizes="[10, 20, 30, 40]"
+      layout=" total , prev, pager, next,sizes, jumper,"
+      :total="totalCount"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { useSystemStore } from '@/store/user_system/system'
+import { Check, Close, Delete, Edit } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
 
 const systemStore = useSystemStore()
 systemStore.postUserList({
-  size: 1,
-  offset: 2,
+  size: 5,
+  offset: 0,
 })
-const { userList } = storeToRefs(systemStore)
-// console.log(res)
+const { userList, totalCount } = storeToRefs(systemStore)
+const currentPage = ref(1)
+const pageSize = ref(10)
 </script>
 
 <style scoped lang="less">
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
+  margin-bottom: 15px;
+  .title {
+    margin-left: 10px;
+  }
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 </style>

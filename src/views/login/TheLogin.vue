@@ -11,6 +11,7 @@ import LoginPannel from './components/LoginPannel.vue'
 <style scoped lang="less">
 .login {
   display: flex;
+  overflow: hidden;
   justify-content: center;
   align-items: center;
   width: 100vw;

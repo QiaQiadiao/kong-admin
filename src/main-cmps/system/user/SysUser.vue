@@ -12,8 +12,6 @@ import UserContent from './cmps/UserContent.vue'
 
 <style scoped lang="less">
 .box {
-  // background-color: white;
-  border-radius: 10px;
   overflow: hidden;
   padding: 10px;
   .search {
@@ -21,11 +19,15 @@ import UserContent from './cmps/UserContent.vue'
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: -2px 2px 8px #bebebe;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
   }
   .content {
     background-color: white;
     padding: 20px;
     box-shadow: -2px 2px 8px #bebebe;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
   }
 }
 </style>

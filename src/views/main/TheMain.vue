@@ -30,18 +30,17 @@ const handleMenuFold = (flag: boolean) => {
   .el-aside::-webkit-scrollbar {
     display: none;
   }
-  .el-container {
-    background-color: #f0f0f0;
-  }
   .el-main {
     padding: 10px;
+    background: url(/src/assets/img/subtle-stripes.svg);
   }
   .el-header {
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: white;
-    box-shadow: 0 5px 5px #bebebe;
+    box-shadow: 0 2px 5px #bebebe;
+    margin-bottom: 5px;
   }
 }
 </style>
