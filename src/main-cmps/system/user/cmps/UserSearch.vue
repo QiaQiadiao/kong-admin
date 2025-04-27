@@ -66,12 +66,16 @@ const formData = reactive({
   realname: '',
   cellphone: '',
   enable: '',
-  createAt: [],
+  createAt: '',
 })
+const emit = defineEmits(['handle-query'])
 const handleReset = () => {
   formRef.value?.resetFields()
 }
-const handleQuery = () => {}
+const handleQuery = () => {
+  if (formData.enable) formData.enable = parseInt(formData.enable) // 强行将字符串类型转化为数字类型
+  emit('handle-query', formData)
+}
 </script>
 
 <style scoped lang="less">

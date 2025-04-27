@@ -22,6 +22,11 @@ export interface Role {
 }
 
 export interface payload_userList {
-  size: number
-  offset: number
+  size?: number
+  offset?: number
+  name?: string
+  realname?: string
+  cellphone?: string
+  enable?: number
+  createAt?: string
 }

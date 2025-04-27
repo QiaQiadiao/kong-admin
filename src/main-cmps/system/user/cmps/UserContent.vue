@@ -29,7 +29,7 @@
     <el-pagination
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
-      :page-sizes="[10, 20, 30, 40]"
+      :page-sizes="[5, 10, 20, 30, 40]"
       layout=" total , prev, pager, next,sizes, jumper,"
       :total="totalCount"
       @size-change="handleSizeChange"
@@ -40,18 +40,30 @@
 
 <script setup lang="ts">
 import { useSystemStore } from '@/store/user_system/system'
+import type { payload_userList } from '@/types/user_system_types'
 import { Check, Close, Delete, Edit } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
 const systemStore = useSystemStore()
-systemStore.postUserList({
-  size: 5,
-  offset: 0,
-})
 const { userList, totalCount } = storeToRefs(systemStore)
 const currentPage = ref(1)
 const pageSize = ref(10)
+const fetchUserList = (data: payload_userList = {}) => {
+  const size = pageSize.value
+  const offset = (currentPage.value - 1) * size
+  const info = { size, offset, ...data }
+  console.log(info)
+  systemStore.postUserList(info)
+}
+fetchUserList()
+defineExpose({ fetchUserList })
+const handleCurrentChange = () => {
+  fetchUserList()
+}
+const handleSizeChange = () => {
+  fetchUserList()
+}
 </script>
 
 <style scoped lang="less">

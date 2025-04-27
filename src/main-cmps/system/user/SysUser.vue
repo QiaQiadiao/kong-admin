@@ -1,13 +1,21 @@
 <template>
   <div class="box">
-    <div class="search"><UserSearch></UserSearch></div>
-    <div class="content"><UserContent></UserContent></div>
+    <div class="search"><UserSearch @handle-query="handleQuery"></UserSearch></div>
+    <div class="content"><UserContent ref="contentRef"></UserContent></div>
   </div>
 </template>
 
 <script setup lang="ts">
 import UserSearch from './cmps/UserSearch.vue'
 import UserContent from './cmps/UserContent.vue'
+import { ref } from 'vue'
+const contentRef = ref<InstanceType<typeof UserContent>>()
+console.log(contentRef)
+const handleQuery = (formData) => {
+  const form = formData
+  console.log(form)
+  contentRef.value?.fetchUserList(form)
+}
 </script>
 
 <style scoped lang="less">
