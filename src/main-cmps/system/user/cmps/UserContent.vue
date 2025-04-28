@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <h3 class="title" style="font-size: 22px">用户列表</h3>
-    <el-button type="info" style="margin-right: 36px" size="large">新建用户</el-button>
+    <el-button type="info" style="margin-right: 36px" size="large" @click="handleCreateUser"
+      >新建用户</el-button
+    >
   </div>
   <div class="main">
     <el-table :data="userList" stripe style="width: 100%">
@@ -71,6 +73,10 @@ const handleDelete = (id: number) => {
   deleteOneUser(id).then(() => {
     fetchUserList()
   })
+}
+const emit = defineEmits(['handle-create'])
+const handleCreateUser = () => {
+  emit('handle-create')
 }
 </script>
 
