@@ -20,8 +20,10 @@
       <el-table-column prop="createAt" label="创建时间" />
       <el-table-column prop="updateAt" label="更新时间" />
       <el-table-column label="操作" align="center" width="200px">
-        <el-button :icon="Edit" text>编辑</el-button>
-        <el-button :icon="Delete" text>删除</el-button>
+        <template #default="scope">
+          <el-button :icon="Edit" text>编辑</el-button>
+          <el-button :icon="Delete" text @click="handleDelete(scope.row.id)">删除</el-button>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -31,6 +33,7 @@
       v-model:page-size="pageSize"
       :page-sizes="[5, 10, 20, 30, 40]"
       layout=" total , prev, pager, next,sizes, jumper,"
+      v-if="totalCount"
       :total="totalCount"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -39,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import { deleteOneUser } from '@/service/api/user/system/system'
 import { useSystemStore } from '@/store/user_system/system'
 import type { payload_userList } from '@/types/user_system_types'
 import { Check, Close, Delete, Edit } from '@element-plus/icons-vue'
@@ -53,7 +57,6 @@ const fetchUserList = (data: payload_userList = {}) => {
   const size = pageSize.value
   const offset = (currentPage.value - 1) * size
   const info = { size, offset, ...data }
-  console.log(info)
   systemStore.postUserList(info)
 }
 fetchUserList()
@@ -63,6 +66,11 @@ const handleCurrentChange = () => {
 }
 const handleSizeChange = () => {
   fetchUserList()
+}
+const handleDelete = (id: number) => {
+  deleteOneUser(id).then(() => {
+    fetchUserList()
+  })
 }
 </script>
 

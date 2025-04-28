@@ -7,3 +7,10 @@ export const postUserListData = (body: payload_userList) => {
   })
   return res
 }
+export const deleteOneUser = async (id: number) => {
+  await myRequest
+    .delete({
+      url: `/user/deleteOneUser/${id}`,
+    })
+    .catch((e) => e)
+}

@@ -10,10 +10,8 @@ import UserSearch from './cmps/UserSearch.vue'
 import UserContent from './cmps/UserContent.vue'
 import { ref } from 'vue'
 const contentRef = ref<InstanceType<typeof UserContent>>()
-console.log(contentRef)
 const handleQuery = (formData) => {
   const form = formData
-  console.log(form)
   contentRef.value?.fetchUserList(form)
 }
 </script>
