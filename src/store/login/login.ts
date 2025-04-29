@@ -10,6 +10,7 @@ import router from '@/router'
 import { ref } from 'vue'
 import { handleMenuToRoute } from '@/utils/menu-map'
 import { LOGIN_TOKEN } from '@/global/constants'
+import { useMainStore } from '../main'
 
 export const useAccountLoginStore = defineStore('login', () => {
   const userInfo = ref({})
@@ -27,6 +28,9 @@ export const useAccountLoginStore = defineStore('login', () => {
     const userInfoResult = await getUserInfoById(id)
     userInfo.value = userInfoResult.data
     localCache.setCache('userInfo', userInfo.value)
+    // 获取main页面中可能会用到的role和department list数据
+    const mainStore = useMainStore()
+    mainStore.fetchEntireData()
     // 获取用户的菜单
     const userMenuResult = await getUserMenusByRoleId(id)
     userMenu.value = userMenuResult.data
@@ -41,6 +45,9 @@ export const useAccountLoginStore = defineStore('login', () => {
     const ui = localCache.getCache('userInfo')
     const um = localCache.getCache('userMenu')
     const tk = localCache.getCache(LOGIN_TOKEN)
+    // 获取main页面中可能会用到的role和department list数据
+    const mainStore = useMainStore()
+    mainStore.fetchEntireData()
     if (ui && um && tk) {
       userInfo.value = ui
       userMenu.value = um

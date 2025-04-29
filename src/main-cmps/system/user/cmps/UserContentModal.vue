@@ -20,15 +20,17 @@
         <el-input v-model="formData.cellphone" placeholder="请输入电话号码"></el-input>
       </el-form-item>
       <el-form-item label="选择角色">
-        <el-select placeholder="请选择角色">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
+        <el-select v-model="formData.roleId" placeholder="请选择角色">
+          <template v-for="item in entireRole" :key="item.id">
+            <el-option :label="item.name" :value="item.id" />
+          </template>
         </el-select>
       </el-form-item>
       <el-form-item label="选择部门">
-        <el-select placeholder="请选择部门">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
+        <el-select v-model="formData.departmentId" placeholder="请选择部门">
+          <template v-for="item in entireDepartment" :key="item.id">
+            <el-option :label="item.name" :value="item.id" />
+          </template>
         </el-select>
       </el-form-item>
     </el-form>
@@ -42,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+import { useMainStore } from '@/store/main'
+import { storeToRefs } from 'pinia'
 import { reactive, ref } from 'vue'
 const centerDialogVisible = ref(false)
 const setDialogVisible = () => {
@@ -56,6 +60,8 @@ const formData = reactive({
   roleId: '',
   departmentId: '',
 })
+const mainStore = useMainStore()
+const { entireRole, entireDepartment } = storeToRefs(mainStore)
 </script>
 
 <style scoped lang="less"></style>

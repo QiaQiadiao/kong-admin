@@ -25,7 +25,7 @@ const handleMenuFold = (flag: boolean) => {
   height: 100%;
   .el-aside {
     background-color: white;
-    transition: width 0.5s ease;
+    transition: width 0.3s ease-in-out;
   }
   .el-aside::-webkit-scrollbar {
     display: none;

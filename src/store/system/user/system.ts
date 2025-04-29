@@ -1,4 +1,4 @@
-import { postUserListData } from '@/service/api/user/system/system'
+import { postUserListData } from '@/service/api/system/user/system'
 import type { IuserDetail, payload_userList } from '@/types/user_system_types'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'

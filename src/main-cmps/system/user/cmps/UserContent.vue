@@ -44,8 +44,8 @@
 </template>
 
 <script setup lang="ts">
-import { deleteOneUser } from '@/service/api/user/system/system'
-import { useSystemStore } from '@/store/user_system/system'
+import { deleteOneUser } from '@/service/api/system/user/system'
+import { useSystemStore } from '@/store/system/user/system'
 import type { payload_userList } from '@/types/user_system_types'
 import { Check, Close, Delete, Edit } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
