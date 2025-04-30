@@ -37,7 +37,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="centerDialogVisible = false" size="large">取消</el-button>
-        <el-button type="info" @click="centerDialogVisible = false" size="large">确认</el-button>
+        <el-button type="info" @click="handleCreateUser" size="large">确认</el-button>
       </div>
     </template>
   </el-dialog>
@@ -45,14 +45,17 @@
 
 <script setup lang="ts">
 import { useMainStore } from '@/store/main'
+import { useSystemStore } from '@/store/system/user/system'
+import type { typeUserInfo } from '@/types/user_system_types'
 import { storeToRefs } from 'pinia'
 import { reactive, ref } from 'vue'
+import { ElNotification } from 'element-plus'
 const centerDialogVisible = ref(false)
 const setDialogVisible = () => {
   centerDialogVisible.value = true
 }
 defineExpose({ setDialogVisible })
-const formData = reactive({
+const formData = reactive<typeUserInfo>({
   name: '',
   realname: '',
   password: '',
@@ -62,6 +65,28 @@ const formData = reactive({
 })
 const mainStore = useMainStore()
 const { entireRole, entireDepartment } = storeToRefs(mainStore)
+const handleCreateUser = () => {
+  if (
+    formData.name === '' ||
+    formData.realname === '' ||
+    formData.password === '' ||
+    formData.cellphone === '' ||
+    formData.roleId === '' ||
+    formData.departmentId === ''
+  ) {
+    ElNotification({
+      title: 'Error',
+      message: '新建失败，用户信息缺失。',
+      type: 'error',
+    })
+  } else {
+    console.log('准备发射')
+    const systemStore = useSystemStore()
+    systemStore.createOneUserAction(formData)
+    systemStore.postUserList()
+  }
+  centerDialogVisible.value = false
+}
 </script>
 
 <style scoped lang="less"></style>

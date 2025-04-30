@@ -13,7 +13,7 @@
       <el-input v-model="account.name" placeholder="请输入账号" />
     </el-form-item>
     <el-form-item label="密码" prop="password">
-      <el-input show-password v-model="account.password" placeholder="请输入验证码" />
+      <el-input show-password v-model="account.password" placeholder="请输入密码" />
     </el-form-item>
   </el-form>
 </template>
@@ -52,25 +52,35 @@ const accountRules = reactive<FormRules>({
 const handleAccountLogin = (isKeep: boolean) => {
   formRef.value?.validate((valid) => {
     if (valid) {
-      ElNotification({
-        title: 'Success',
-        message: '登录成功',
-        type: 'success',
-      })
       const name = account.name
       const password = account.password
       const accountLoginStore = useAccountLoginStore()
-      accountLoginStore.accountLogin({ name, password }).then(() => {
-        if (isKeep) {
-          localCache.setCache(NAME_CACHE, name)
-          localCache.setCache(PASSWORD_CACHE, password)
-          localCache.setCache(ISKEEP_CACHE, isKeep)
-        } else {
-          localCache.removeCache(NAME_CACHE)
-          localCache.removeCache(PASSWORD_CACHE)
-          localCache.removeCache(ISKEEP_CACHE)
-        }
-      })
+      accountLoginStore
+        .accountLogin({ name, password })
+        .then(() => {
+          ElNotification({
+            title: 'Success',
+            message: '登录成功',
+            type: 'success',
+          })
+          if (isKeep) {
+            localCache.setCache(NAME_CACHE, name)
+            localCache.setCache(PASSWORD_CACHE, password)
+            localCache.setCache(ISKEEP_CACHE, isKeep)
+          } else {
+            localCache.removeCache(NAME_CACHE)
+            localCache.removeCache(PASSWORD_CACHE)
+            localCache.removeCache(ISKEEP_CACHE)
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+          ElNotification({
+            title: 'Error',
+            message: '登录失败，密码或账号错误',
+            type: 'error',
+          })
+        })
     } else {
       ElNotification({
         title: 'Error',

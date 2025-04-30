@@ -1,5 +1,5 @@
 import { myRequest } from '@/service'
-import type { payload_userList } from '@/types/user_system_types'
+import type { payload_userList, typeUserInfo } from '@/types/user_system_types'
 export const postUserListData = (body: payload_userList) => {
   const res = myRequest.post({
     url: '/user/postUserList',
@@ -13,4 +13,11 @@ export const deleteOneUser = async (id: number) => {
       url: `/user/deleteOneUser/${id}`,
     })
     .catch((e) => e)
+}
+export const createOneUser = (body: typeUserInfo) => {
+  console.log(body)
+  myRequest.post({
+    url: '/user/createOneUser',
+    data: body,
+  })
 }
