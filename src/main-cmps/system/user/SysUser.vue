@@ -5,7 +5,7 @@
       <UserContent ref="contentRef" @handle-create="handleCreateClick"></UserContent>
     </div>
     <div class="modal">
-      <UserContentModal></UserContentModal>
+      <UserContentModal @handle-new="handleNewClick"></UserContentModal>
     </div>
     <div class="modal">
       <UserContentModal ref="modalRef"></UserContentModal>
@@ -18,16 +18,24 @@ import UserSearch from './cmps/UserSearch.vue'
 import UserContent from './cmps/UserContent.vue'
 import UserContentModal from './cmps/UserContentModal.vue'
 import { ref } from 'vue'
+import { useSystemStore } from '@/store/system/user/system'
 
 const contentRef = ref<InstanceType<typeof UserContent>>()
 const handleQuery = (formData) => {
-  const form = formData
-  contentRef.value?.fetchUserList(form)
+  contentRef.value!.pageSize = 10
+  contentRef.value!.currentPage = 1
+  const systemStore = useSystemStore()
+  systemStore.updateUserList(formData).then(() => contentRef.value?.fetchUserList())
 }
 
 const modalRef = ref<InstanceType<typeof UserContentModal>>()
 const handleCreateClick = () => {
   modalRef.value?.setDialogVisible()
+}
+const handleNewClick = () => {
+  contentRef.value!.pageSize = 10
+  contentRef.value!.currentPage = 1
+  contentRef.value?.fetchUserList()
 }
 </script>
 

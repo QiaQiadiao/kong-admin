@@ -55,14 +55,14 @@ const systemStore = useSystemStore()
 const { userList, totalCount } = storeToRefs(systemStore)
 const currentPage = ref(1)
 const pageSize = ref(10)
-const fetchUserList = (data: payload_userList = {}) => {
+const fetchUserList = () => {
   const size = pageSize.value
   const offset = (currentPage.value - 1) * size
-  const info = { size, offset, ...data }
+  const info = { size, offset }
   systemStore.postUserList(info)
 }
 fetchUserList()
-defineExpose({ fetchUserList })
+defineExpose({ fetchUserList, currentPage, pageSize })
 const handleCurrentChange = () => {
   fetchUserList()
 }

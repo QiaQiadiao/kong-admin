@@ -7,6 +7,12 @@ export const postUserListData = (body: payload_userList) => {
   })
   return res
 }
+export const updateUserListData = (body: payload_userList) => {
+  myRequest.post({
+    url: '/user/updateUserList',
+    data: body,
+  })
+}
 export const deleteOneUser = async (id: number) => {
   await myRequest
     .delete({

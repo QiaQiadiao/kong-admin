@@ -55,6 +55,7 @@ const setDialogVisible = () => {
   centerDialogVisible.value = true
 }
 defineExpose({ setDialogVisible })
+const emit = defineEmits(['handle-new'])
 const formData = reactive<typeUserInfo>({
   name: '',
   realname: '',
@@ -80,10 +81,8 @@ const handleCreateUser = () => {
       type: 'error',
     })
   } else {
-    console.log('准备发射')
     const systemStore = useSystemStore()
-    systemStore.createOneUserAction(formData)
-    systemStore.postUserList()
+    systemStore.createOneUserAction(formData).then(() => emit('handle-new'))
   }
   centerDialogVisible.value = false
 }
