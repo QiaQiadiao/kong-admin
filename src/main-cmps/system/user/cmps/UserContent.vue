@@ -23,7 +23,7 @@
       <el-table-column prop="updateAt" label="更新时间" />
       <el-table-column label="操作" align="center" width="200px">
         <template #default="scope">
-          <el-button :icon="Edit" text>编辑</el-button>
+          <el-button :icon="Edit" text @click="handleEdit(scope.row)">编辑</el-button>
           <el-button :icon="Delete" text @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -46,7 +46,6 @@
 <script setup lang="ts">
 import { deleteOneUser } from '@/service/api/system/user/system'
 import { useSystemStore } from '@/store/system/user/system'
-import type { payload_userList } from '@/types/user_system_types'
 import { Check, Close, Delete, Edit } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
@@ -74,9 +73,12 @@ const handleDelete = (id: number) => {
     fetchUserList()
   })
 }
-const emit = defineEmits(['handle-create'])
+const emit = defineEmits(['handle-create', 'handle-edit'])
 const handleCreateUser = () => {
-  emit('handle-create')
+  emit('handle-create', true)
+}
+const handleEdit = (rowInfo) => {
+  emit('handle-edit', rowInfo, false)
 }
 </script>
 

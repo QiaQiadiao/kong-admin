@@ -2,13 +2,14 @@
   <div class="box">
     <div class="search"><UserSearch @handle-query="handleQuery"></UserSearch></div>
     <div class="content">
-      <UserContent ref="contentRef" @handle-create="handleCreateClick"></UserContent>
+      <UserContent
+        ref="contentRef"
+        @handle-create="handleCreateClick"
+        @handle-edit="handleEditClick"
+      ></UserContent>
     </div>
     <div class="modal">
-      <UserContentModal @handle-new="handleNewClick"></UserContentModal>
-    </div>
-    <div class="modal">
-      <UserContentModal ref="modalRef"></UserContentModal>
+      <UserContentModal @handle-new="handleNewClick" ref="modalRef"></UserContentModal>
     </div>
   </div>
 </template>
@@ -29,13 +30,20 @@ const handleQuery = (formData) => {
 }
 
 const modalRef = ref<InstanceType<typeof UserContentModal>>()
-const handleCreateClick = () => {
-  modalRef.value?.setDialogVisible()
+const handleCreateClick = (isNew: boolean) => {
+  // 内容组件传来到
+  modalRef.value?.setDialogVisible(null, isNew)
 }
 const handleNewClick = () => {
+  // 模态框传来的
   contentRef.value!.pageSize = 10
   contentRef.value!.currentPage = 1
   contentRef.value?.fetchUserList()
+}
+const handleEditClick = (rowInfo, isNew: boolean) => {
+  // 内容组件传来的
+  console.log(rowInfo)
+  modalRef.value?.setDialogVisible(rowInfo, isNew)
 }
 </script>
 

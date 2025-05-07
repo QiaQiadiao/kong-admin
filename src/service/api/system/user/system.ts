@@ -21,9 +21,14 @@ export const deleteOneUser = async (id: number) => {
     .catch((e) => e)
 }
 export const createOneUser = (body: typeUserInfo) => {
-  console.log(body)
   myRequest.post({
     url: '/user/createOneUser',
+    data: body,
+  })
+}
+export const editOneUser = (body: typeUserInfo) => {
+  myRequest.patch({
+    url: '/user/editOneUser',
     data: body,
   })
 }

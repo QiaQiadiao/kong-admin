@@ -1,5 +1,6 @@
 import {
   createOneUser,
+  editOneUser,
   postUserListData,
   updateUserListData,
 } from '@/service/api/system/user/system'
@@ -17,13 +18,16 @@ export const useSystemStore = defineStore('system', () => {
     userList.value = temp.list
     totalCount.value = temp.totalCount
   }
-  const updateUserList = async (body: payload_userList = {}) => {
-    await updateUserListData(body)
+  const updateUserList = async (findInfo: payload_userList = {}) => {
+    await updateUserListData(findInfo)
   }
-  const createOneUserAction = async (body: typeUserInfo) => {
-    await createOneUser(body)
+  const createOneUserAction = async (createInfo: typeUserInfo) => {
+    await createOneUser(createInfo)
     await updateUserList()
     await postUserList()
+  }
+  const editOneUserAction = (editInfo: typeUserInfo) => {
+    editOneUser(editInfo)
   }
   return {
     userList,
@@ -31,5 +35,6 @@ export const useSystemStore = defineStore('system', () => {
     postUserList,
     createOneUserAction,
     updateUserList,
+    editOneUserAction,
   }
 })
