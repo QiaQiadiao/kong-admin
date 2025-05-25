@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { useAccountLoginStore } from '@/store/login/login'
 import { useRoute, useRouter } from 'vue-router'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { pathToMenu } from '@/utils/menu-map'
 defineProps({
   isFold: {
@@ -49,7 +49,7 @@ const defaultActive = computed(() => {
   const currentMenu = pathToMenu(route.path, userMenu)
   return currentMenu.id + ''
 })
-const handleItemClick = (item: any) => {
+const handleItemClick = (item: unknown) => {
   router.push(item.url)
 }
 </script>

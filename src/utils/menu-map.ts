@@ -3,7 +3,7 @@ import router from '@/router'
 // 获得本地所有路由情况
 const getAllRoute = () => {
   // 读取所有路由: router/main所有ts文件
-  const files: Record<string, any> = import.meta.glob('../router/main/**/*.ts', { eager: true })
+  const files: Record<string, unknown> = import.meta.glob('../router/main/**/*.ts', { eager: true })
   const localRoutes: RouteRecordRaw[] = []
   for (const key in files) {
     localRoutes.push(files[key].default)
@@ -11,7 +11,7 @@ const getAllRoute = () => {
   return localRoutes
 }
 // 导出第一个菜单路由
-export let firstMenu: any = null
+export let firstMenu: unknown = null
 // 根据传入菜单情况按需进行动态导入路由
 export const handleMenuToRoute = (userMenu) => {
   const localRoutes = getAllRoute()
@@ -65,4 +65,23 @@ export const pathToCrumber = (path: string, userMenu) => {
       }
     }
   }
+}
+
+/*
+@params menuIdList: 用户的菜单id数组
+@params menuList: 所有菜单
+ */
+// 根据用户menus返回相应权限字符串数组
+export const menusToPermission = (menuIdList, menuList) => {
+  const permissions: string[] = []
+  const fn = (list) => {
+    for (const item of list) {
+      if (!!menuIdList.find((id) => id === item.id)) {
+        if (item.type === 3) permissions.push(item.permission)
+      }
+      if (item.children) fn(item.children)
+    }
+  }
+  fn(menuList)
+  return permissions
 }

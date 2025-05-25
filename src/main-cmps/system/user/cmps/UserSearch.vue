@@ -71,6 +71,7 @@ const formData = reactive({
 const emit = defineEmits(['handle-query'])
 const handleReset = () => {
   formRef.value?.resetFields()
+  handleQuery()
 }
 const handleQuery = () => {
   if (formData.enable) formData.enable = parseInt(formData.enable) // 强行将字符串类型转化为数字类型

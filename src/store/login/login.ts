@@ -8,13 +8,14 @@ import type { IAccount } from '@/types/login_types'
 import { localCache } from '@/utils/cache'
 import router from '@/router'
 import { ref } from 'vue'
-import { handleMenuToRoute } from '@/utils/menu-map'
+import { handleMenuToRoute, menusToPermission } from '@/utils/menu-map'
 import { LOGIN_TOKEN } from '@/global/constants'
 import { useMainStore } from '../main'
 
 export const useAccountLoginStore = defineStore('login', () => {
   const userInfo = ref({})
   const userMenu = ref([])
+  const permission = ref<string[]>([])
   const token = ref('')
   // 账号登录 获取id,token，再根据id获取userInfo和userMenu
   const accountLogin = async (account: IAccount) => {
@@ -35,6 +36,9 @@ export const useAccountLoginStore = defineStore('login', () => {
     const userMenuResult = await getUserMenusByRoleId(id)
     userMenu.value = userMenuResult.data
     localCache.setCache('userMenu', userMenu.value)
+    // 获取用户权限
+    permission.value = menusToPermission(userInfo.value.role.menus, userMenu.value)
+    localCache.setCache('permission', permission.value)
     // 依据用户菜单动态构建对应路由
     handleMenuToRoute(userMenu)
     // 跳转到主页面
@@ -45,19 +49,22 @@ export const useAccountLoginStore = defineStore('login', () => {
     const ui = localCache.getCache('userInfo')
     const um = localCache.getCache('userMenu')
     const tk = localCache.getCache(LOGIN_TOKEN)
+    const pm = localCache.getCache('permission')
     // 获取main页面中可能会用到的role和department list数据
     const mainStore = useMainStore()
     mainStore.fetchEntireData()
-    if (ui && um && tk) {
+    if (ui && um && tk && pm) {
       userInfo.value = ui
       userMenu.value = um
       token.value = tk
+      permission.value = pm
       handleMenuToRoute(userMenu)
     }
   }
   return {
     userInfo,
     userMenu,
+    permission,
     accountLogin,
     loadLogin,
   }

@@ -45,12 +45,12 @@
 
 <script setup lang="ts">
 import { deleteOneUser } from '@/service/api/system/user/system'
-import { useSystemStore } from '@/store/system/user/system'
+import { useSysStore } from '@/store/system/user/system'
 import { Check, Close, Delete, Edit } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
-const systemStore = useSystemStore()
+const systemStore = useSysStore()
 const { userList, totalCount } = storeToRefs(systemStore)
 const currentPage = ref(1)
 const pageSize = ref(10)

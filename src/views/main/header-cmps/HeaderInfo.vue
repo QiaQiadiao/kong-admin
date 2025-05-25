@@ -16,7 +16,7 @@
     <el-dropdown>
       <span class="el-dropdown-link">
         <el-avatar :size="35" src="src\assets\img\头像.avif" />
-        <span class="name">RayLin </span>
+        <span class="name">{{ userInfo.name }}</span>
       </span>
       <template #dropdown>
         <el-dropdown-menu>
@@ -42,7 +42,10 @@
 import { LOGIN_TOKEN } from '@/global/constants'
 import { localCache } from '@/utils/cache'
 import { useRouter } from 'vue-router'
-
+import { useAccountLoginStore } from '@/store/login/login'
+import { storeToRefs } from 'pinia'
+const accountLoginStore = useAccountLoginStore()
+const { userInfo } = storeToRefs(accountLoginStore)
 const router = useRouter()
 const handleExitLogin = () => {
   localCache.removeCache(LOGIN_TOKEN)

@@ -2,13 +2,19 @@
 import { myRequest } from '..'
 
 export const getAllRolesList = () => {
-  return myRequest.post({
-    url: '/role/list',
+  return myRequest.get({
+    url: '/role/all',
   })
 }
 
 export const getAllDepartmentList = () => {
+  return myRequest.get({
+    url: '/department/all',
+  })
+}
+
+export const getAllMenusList = () => {
   return myRequest.post({
-    url: '/department/list',
+    url: '/menu/list',
   })
 }

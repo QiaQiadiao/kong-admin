@@ -9,7 +9,11 @@
       ></UserContent>
     </div>
     <div class="modal">
-      <UserContentModal @handle-new="handleNewClick" ref="modalRef"></UserContentModal>
+      <UserContentModal
+        @handle-new="handleNewClick"
+        @handle-edit="handleChangeClick"
+        ref="modalRef"
+      ></UserContentModal>
     </div>
   </div>
 </template>
@@ -19,13 +23,13 @@ import UserSearch from './cmps/UserSearch.vue'
 import UserContent from './cmps/UserContent.vue'
 import UserContentModal from './cmps/UserContentModal.vue'
 import { ref } from 'vue'
-import { useSystemStore } from '@/store/system/user/system'
+import { useSysStore } from '@/store/system/user/system'
 
 const contentRef = ref<InstanceType<typeof UserContent>>()
 const handleQuery = (formData) => {
   contentRef.value!.pageSize = 10
   contentRef.value!.currentPage = 1
-  const systemStore = useSystemStore()
+  const systemStore = useSysStore()
   systemStore.updateUserList(formData).then(() => contentRef.value?.fetchUserList())
 }
 
@@ -40,9 +44,12 @@ const handleNewClick = () => {
   contentRef.value!.currentPage = 1
   contentRef.value?.fetchUserList()
 }
+const handleChangeClick = () => {
+  // 从模态框传来
+  contentRef.value?.fetchUserList()
+}
 const handleEditClick = (rowInfo, isNew: boolean) => {
   // 内容组件传来的
-  console.log(rowInfo)
   modalRef.value?.setDialogVisible(rowInfo, isNew)
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-model="centerDialogVisible"
-    :title="isNew ? '新建用户' : '编辑用户'"
+    :title="isNew ? modalConfig.header.createName : modalConfig.header.editName"
     width="500"
     destroy-on-close
     center
@@ -14,32 +14,25 @@
       style="max-width: 400px; margin: 0 auto"
       size="large"
     >
-      <el-form-item label="用户名">
-        <el-input v-model="formData.name" placeholder="请输入用户名"></el-input>
-      </el-form-item>
-      <el-form-item label="真实姓名">
-        <el-input v-model="formData.realname" placeholder="请输入真实姓名"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" v-if="isNew">
-        <el-input v-model="formData.password" placeholder="请输入密码"></el-input>
-      </el-form-item>
-      <el-form-item label="电话号码">
-        <el-input v-model="formData.cellphone" placeholder="请输入电话号码"></el-input>
-      </el-form-item>
-      <el-form-item label="选择角色">
-        <el-select v-model="formData.roleId" placeholder="请选择角色">
-          <template v-for="item in entireRole" :key="item.id">
-            <el-option :label="item.name" :value="item.id" />
-          </template>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="选择部门">
-        <el-select v-model="formData.departmentId" placeholder="请选择部门">
-          <template v-for="item in entireDepartment" :key="item.id">
-            <el-option :label="item.name" :value="item.id" />
-          </template>
-        </el-select>
-      </el-form-item>
+      <template v-for="item in modalConfig.formItems" :key="item.prop">
+        <template v-if="item.type === 'select'">
+          <el-form-item :label="item.label">
+            <el-select v-model="formData[item.prop]" :placeholder="item.placeholder">
+              <template v-for="option in item.options()" :key="option.id">
+                <el-option :label="option.name" :value="option.id" />
+              </template>
+            </el-select>
+          </el-form-item>
+        </template>
+        <template v-else-if="item.type === 'slot'">
+          <slot :name="item.slotName"> </slot>
+        </template>
+        <template v-else>
+          <el-form-item :label="item.label">
+            <el-input v-model="formData[item.prop]" :placeholder="item.placeholder"></el-input>
+          </el-form-item>
+        </template>
+      </template>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -51,26 +44,36 @@
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from '@/store/main'
-import { useSysStore } from '@/store/system/user/system'
-import type { typeUserInfo } from '@/types/user_system_types'
-import { storeToRefs } from 'pinia'
+import { useSystemStore } from '@/store/system/system'
 import { reactive, ref } from 'vue'
 import { ElNotification } from 'element-plus'
+
+// 接收配置文件
+interface IProps {
+  modalConfig: {
+    pageName: string
+    header: {
+      createName: string
+      editName: string
+    }
+    formItems: []
+  }
+  otherInfo?: unknown
+}
+const props = defineProps<IProps>()
+
+// 初始化表格
+const initialForm: unknown = {}
+for (const item of props.modalConfig.formItems) {
+  if (item.prop) initialForm[item.prop] = item.initVal ?? ''
+}
+const formData = reactive(initialForm)
+
 const centerDialogVisible = ref(false) // 是否显示模态框
 const isNew = ref(true) // 是否为新建对应的模态框
-const formData = reactive<typeUserInfo>({
-  name: '',
-  realname: '',
-  password: '',
-  cellphone: '',
-  roleId: '',
-  departmentId: '',
-})
+
 // 获取角色和部门信息
-const mainStore = useMainStore()
-const { entireRole, entireDepartment } = storeToRefs(mainStore)
-const systemStore = useSysStore()
+const systemStore = useSystemStore()
 const handleCloseClick = () => {
   centerDialogVisible.value = false
   for (const key in formData) {
@@ -115,13 +118,17 @@ const handleCreateUser = () => {
       type: 'error',
     })
   } else {
-    systemStore.createOneUserAction(formData).then(() => emit('handle-new'))
+    let newformData = formData
+    if (props.otherInfo) newformData = { ...newformData, ...props.otherInfo }
+    systemStore.createAction(newformData, props.modalConfig.pageName).then(() => emit('handle-new'))
   }
   handleCloseClick()
 }
 // 如果创建点击时是编辑用户
 const handleEditUser = () => {
-  systemStore.editOneUserAction(formData).then(() => emit('handle-edit'))
+  let newformData = formData
+  if (props.otherInfo) newformData = { ...newformData, ...props.otherInfo }
+  systemStore.editAction(newformData, props.modalConfig.pageName).then(() => emit('handle-edit'))
   handleCloseClick()
 }
 </script>

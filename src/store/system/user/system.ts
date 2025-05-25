@@ -8,7 +8,7 @@ import type { IuserDetail, payload_userList, typeUserInfo } from '@/types/user_s
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export const useSystemStore = defineStore('system', () => {
+export const useSysStore = defineStore('sys', () => {
   const userList = ref<IuserDetail[]>([])
   const totalCount = ref<number>()
 
@@ -26,8 +26,9 @@ export const useSystemStore = defineStore('system', () => {
     await updateUserList()
     await postUserList()
   }
-  const editOneUserAction = (editInfo: typeUserInfo) => {
-    editOneUser(editInfo)
+  const editOneUserAction = async (editInfo: typeUserInfo) => {
+    await editOneUser(editInfo)
+    await updateUserList()
   }
   return {
     userList,

@@ -39,7 +39,7 @@ class MyRequest {
     console.log(message)
   }
   //封装网络请求方法
-  request<T = any>(config: MyRequestConfig<T>) {
+  request<T = unknown>(config: MyRequestConfig<T>) {
     if (config.interceptors?.requestSuccessFn) {
       console.log('url请求成功拦截')
       config = config.interceptors?.requestSuccessFn(config as MyInternalRequestConfig)
@@ -48,7 +48,7 @@ class MyRequest {
       try {
         // 在尝试发送请求之前，捕获可能的配置错误
         this.instance
-          .request<any, T>(config)
+          .request<unknown, T>(config)
           .then((res) => {
             if (config.interceptors?.responseSuccessFn) {
               console.log('url响应成功拦截', config.url)
@@ -63,7 +63,7 @@ class MyRequest {
             }
             reject(error)
           })
-      } catch (e: any) {
+      } catch (e: unknown) {
         if (config.interceptors?.requestFailureFn) {
           console.log('url请求失败拦截', config.url)
           const modifiedError = config.interceptors.requestFailureFn(e)
@@ -75,19 +75,19 @@ class MyRequest {
     })
   }
   // 封装常用方法
-  get<T = any>(config: MyRequestConfig<T>) {
+  get<T = unknown>(config: MyRequestConfig<T>) {
     return this.request({ ...config, method: 'GET' })
   }
-  post<T = any>(config: MyRequestConfig<T>) {
+  post<T = unknown>(config: MyRequestConfig<T>) {
     return this.request({ ...config, method: 'POST' })
   }
-  put<T = any>(config: MyRequestConfig<T>) {
+  put<T = unknown>(config: MyRequestConfig<T>) {
     return this.request({ ...config, method: 'PUT' })
   }
-  delete<T = any>(config: MyRequestConfig<T>) {
+  delete<T = unknown>(config: MyRequestConfig<T>) {
     return this.request({ ...config, method: 'DELETE' })
   }
-  patch<T = any>(config: MyRequestConfig<T>) {
+  patch<T = unknown>(config: MyRequestConfig<T>) {
     return this.request({ ...config, method: 'PATCH' })
   }
 }
