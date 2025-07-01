@@ -1,5 +1,6 @@
 # kong-admin
 
+The backend project repository is here: https://github.com/QiaQiadiao/kong-admin-server
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
