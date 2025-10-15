@@ -7,6 +7,7 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import { viteMockServe } from 'vite-plugin-mock' 
 // vite-plugin-style-import elementPlus样式自动导入
 import {
   createStyleImportPlugin,
@@ -52,6 +53,10 @@ export default defineConfig({
           },
         },
       ],
+    }),
+    viteMockServe({
+        mockPath: './src/service/mock',
+        enable: true,
     }),
   ],
   resolve: {

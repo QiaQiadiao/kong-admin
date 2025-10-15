@@ -74,7 +74,9 @@ export const pathToCrumber = (path: string, userMenu) => {
 // 根据用户menus返回相应权限字符串数组
 export const menusToPermission = (menuIdList, menuList) => {
   const permissions: string[] = []
+
   const fn = (list) => {
+    if (!list) return
     for (const item of list) {
       if (!!menuIdList.find((id) => id === item.id)) {
         if (item.type === 3) permissions.push(item.permission)

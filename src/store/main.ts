@@ -6,14 +6,22 @@ export const useMainStore = defineStore('main', () => {
   const entireRole = ref<roleItem[]>([])
   const entireDepartment = ref<departmentItem[]>([])
   const entireMenu = ref([])
-  const fetchEntireData = async () => {
-    const roleData = await getAllRolesList()
-    const departmentData = await getAllDepartmentList()
-    const menuData = await getAllMenusList()
-    entireRole.value = roleData.data.list
-    entireDepartment.value = departmentData.data.list
-    entireMenu.value = menuData.data.data.list
+ const fetchEntireData = async () => {
+    try {
+      const [roleResponse, departmentResponse, menuResponse] = await Promise.all([
+        getAllRolesList(),
+        getAllDepartmentList(),
+        getAllMenusList()
+      ]);
+      // 分别处理每个请求的结果
+      entireRole.value = roleResponse.data.list;
+      entireDepartment.value = departmentResponse.data.list;
+      entireMenu.value = menuResponse.data.data.list;
+    } catch (error) {
+      console.error('数据获取失败', error);
+    }
   }
+
   return {
     entireRole,
     entireDepartment,
